@@ -10,7 +10,7 @@ setup(
     author_email='badri.dilbert@gmail.com',
     url='http://www.haskellcookbook.com',
     install_requires=[
-        'Django<=1.4',
+        'Django>=1.4.3',
         'Markdown==2.3.1',
         'Pygments==1.6',
         'South==0.8.2',
