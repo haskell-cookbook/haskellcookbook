@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}Post a comment{% endblock %}
+
+{% block content_header %}Post a comment{% endblock %}
+
+{% block content %}
+{% load safe_markup %}
+{{ form.non_field_errors }}
+
+<dl>
+
+<div class="bee-like-this">
+    {# A honeypot field called "name" #}
+    <dt><label for="id_name">{% trans "Your Name:" %}</label></dt>
+    <dd>{{ form.name.errors }}{{ form.name }}</dd>
+</div>
+
+<form action="/comments/post/" method="post">{% csrf_token %}
+
+<dt><a href="/users/{{ comment.user.username }}/">{{ user.username }}</a></dt>
+<dd>{{ comment|safe_markdown:"safe"|safe }}</dd>
+
+<dt><label for="id_comment">Comment:</label></dt>
+<dd>{{ form.comment.errors }}{{ form.comment }}</dd>
+
+<dt><label for="id_captcha">{% trans "Captcha:" %}</label></dt>
+<dd>{{ form.captcha.errors }}{{ form.captcha }}</dd>
+
+<p>
+<input type="submit" name="preview" value="Preview comment" />
+<input type="submit" name="post" value="Post comment" />
+</p>
+<p style="display:none;">
+  {{ form.honeypot }}
+  {{ form.content_type }}
+  {{ form.object_pk }}
+  {{ form.timestamp }}
+  {{ form.security_hash }}
+</p>
+</form>
+</dl>
+
+{% endblock %}
+
+{% block sidebar %}
+<p>Here's what your comment will look like; if you're happy with it, go ahead and post, or feel free to edit and preview again.</p>
+<p>Remember that you can use Markdown syntax, but <strong>raw HTML will be removed</strong>.
+{% endblock %}

@@ -1,17 +1,49 @@
-from django.conf.urls.defaults import patterns, include, url
-
-# Uncomment the next two lines to enable the admin:
+from django.conf.urls.defaults import url, patterns, include
 from django.contrib import admin
+from django.shortcuts import render
+from django.views.generic import TemplateView
+
+from haystack.views import SearchView, search_view_factory
+
+from cab import feeds
+from cab.forms import AdvancedSearchForm, RegisterForm
+from registration.backends.default.views import RegistrationView
+
 admin.autodiscover()
 
+
+class CabRegistrationView(RegistrationView):
+    form_class = RegisterForm
+
+
 urlpatterns = patterns('',
-    # Examples:
-    url(r'^$', 'openshift.views.home', name='home'),
-    # url(r'^openshift/', include('openshift.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^accounts/register/$', CabRegistrationView.as_view(),
+        name='registration_register'),
+    url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^bookmarks/', include('cab.urls.bookmarks')),
+    url(r'^comments/', include('django.contrib.comments.urls')),
+    url(r'^feeds/author/(?P<username>[\w.@+-]+)/$',
+        feeds.SnippetsByAuthorFeed()),
+    url(r'^feeds/language/(?P<slug>[\w-]+)/$', feeds.SnippetsByLanguageFeed()),
+    url(r'^feeds/latest/$', feeds.LatestSnippetsFeed()),
+    url(r'^feeds/tag/(?P<slug>[\w-]+)/$', feeds.SnippetsByTagFeed()),
+    url(r'^languages/', include('cab.urls.languages')),
+    url(r'^search/$', 'haystack.views.basic_search', name='cab_search'),
+    url(r'^search/autocomplete/$', 'cab.views.snippets.autocomplete',
+        name='snippet_autocomplete'),
+    url(r'^search/advanced/$', search_view_factory(view_class=SearchView,
+        template='search/advanced_search.html', form_class=AdvancedSearchForm),
+        name='cab_search_advanced'),
+    url(r'^recipes/', include('cab.urls.snippets')),
+    url(r'^tags/', include('cab.urls.tags')),
+    url(r'^users/$', 'cab.views.popular.top_authors', name='cab_top_authors'),
+    url(r'^users/(?P<username>[ -_\.\w]+)/$', 'cab.views.snippets.author_snippets',
+        name='cab_author_snippets'),
+    url(r'^$', lambda request: render(request, 'homepage.html')),
+    url(r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
+    url(r'^tos/$', TemplateView.as_view(template_name="tos.html")),                       
+    url(r'^about/$', TemplateView.as_view(template_name="about.html")),                       
 )

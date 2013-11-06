@@ -1,0 +1,44 @@
+{% load i18n %}
+{% if request.user.is_authenticated %}
+<form action="/comments/post/" method="post">{% csrf_token %}
+
+{{ form.non_field_errors }}
+
+<p>{% trans "Username:" %} <strong>{{ user.username }}</strong> (<a href="/accounts/logout/">{% trans "Log out" %}</a>)</p>
+<dl>
+
+<div class="bee-like-this">
+    {# A honeypot field called "your_name" #}
+    <dt><label for="id_your_name">{% trans "Your Name:" %}</label></dt>
+    <dd>{{ form.your_name }}</dd>
+</div>
+
+<dt><label for="id_comment">{% trans "Comment:" %}</label></dt>
+<dd><textarea name="comment" id="id_comment" rows="10" cols="60"></textarea><br />
+You may use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown syntax</a> here, but <strong>raw HTML will be removed</strong>.</dd>
+
+<dt>
+<div style="display:none;">
+    {{ form.honeypot }}
+    {{ form.content_type }}
+    {{ form.object_pk }}
+    {{ form.timestamp }}
+    {{ form.security_hash }}
+</div>
+    <button type="submit" name="preview" class="small" value="{% trans "Preview comment" %}">{% trans "Preview comment" %}</button>
+</dt>
+</dl>
+</form>
+{% else %}
+<form action="/accounts/login/" method="post">{% csrf_token %}
+<dl>
+<dt><label for="id_username">{% trans "Username:" %}</label></dt>
+<dd><input type="text" name="username" id="id_username" /></dd>
+<dt><label for="id_password">{% trans "Password:" %}</label></dt>
+<dd><input type="password" name="password" id="id_password" /> (<a href="/accounts/password_reset/">{% trans "Forgotten your password?" %}</a>)</dd>
+<dt></dt>
+<dd><button type="submit" class="small" value="Login">Login</button></dd>
+</dl>
+<input type="hidden" name="next" value="{{ request.get_full_path }}" />
+</form>
+{% endif %}

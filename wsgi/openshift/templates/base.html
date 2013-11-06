@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  {% block meta %}{% endblock meta %}
+  {% block base_title %}
+  <title>Haskell Cookbook :: {% block title %}Home{% endblock %}</title>
+  {% endblock base_title %}
+
+  {% if settings.OFFLINE %}
+  <script src="{% static "js/jquery-1.8.1-min.js" %}"></script>
+  {% else %}
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  {% endif %}
+  
+  {% block foundation_css %}
+  {% load compressed %}
+  {% compressed_css 'foundation' %}
+  {% endblock foundation_css %}  
+  {% block css %}  
+  <link rel="stylesheet" href="{% static "css/pygments.css" %}" type="text/css" />
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+  {% endblock css %}
+  {% block extra_css %}{% endblock extra_css %}
+  <link rel="alternate" href="/feeds/latest/" type="application/atom+xml" title="Feed of latest Recipes" />
+  {% block feeds %}{% endblock %}
+
+  {% block extra_scripts %}{% endblock %}
+</head>
+<body class="{% block bodyclass %}snippets{% endblock %}">
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="nav-bar right">
+	<ul class="button-group" id="main-menu">
+          {% if user.is_authenticated %}
+          <li id="add-recipe"><a href="/recipes/add/" class="button">Add a recipe</a></li>
+          <li id="nav-account"><a href="/users/{{ user.username }}/" class="button">my recipes</a></li>
+          <li id="bookmarks"><a href="/bookmarks/" class="button">my bookmarks</a></li>
+	  <li id="logout"><a href="/accounts/logout/" class="button">Log out</a></li>
+          {% else %}
+          <li id="login"><a href="/accounts/login/?next={% ifequal request.path "/accounts/logout/" %}/{% else %}{{ request.path }}{% endifequal %}" class="button">Sign in</a></li>
+          {% endif %}
+	</ul>
+      </div>
+      <h1><a href="/">Haskell Cookbook</a></h1><hr />
+    </div>
+  </div>
+
+
+  <div id="content" class="row">
+    <h2>{% block content_header %}{% endblock %}</h2>
+    <div id="main" class="large-9 columns" role="content">
+      {% if messages %}
+      {% for message in messages %}
+      <div class="{% if message.tags %} message_{{ message.tags }}{% else %}message_info{% endif %}">
+	<p class="alert-box success">{{ message }}</p>
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% block content %}
+      {% endblock %}
+    </div>
+    <aside class="large-3 columns">
+      <div id="sidebar">
+	{% block sidebar %}
+	{% load core_tags %}
+	{% endblock %}
+      </div>
+    </aside>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      {% block extra_content %}
+      {% endblock %}
+    </div>
+  </div>
+
+  <footer id="footer" class="row">
+    <div class="large-12 columns">
+      <hr />
+      <div class="row">
+	<div id="copyright" class="large-6 columns"></div>
+	<div class="large-6 columns">
+          <ul class="inline-list right">
+            <li><a href="/about">About</a></li>
+            <li><a href="/tos">Terms of Service</a></li>
+            <li><a href="mailto:badri.dilbert@gmail.com">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
