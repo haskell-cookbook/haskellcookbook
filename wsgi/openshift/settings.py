@@ -165,7 +165,6 @@ INSTALLED_APPS = (
     'taggit',
     'taggit_autosuggest',
     'captcha',
-    'pipeline',
     'epiceditor',
     'codemirror',
     'allauth',
@@ -176,6 +175,9 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.stackexchange',
     'allauth.socialaccount.providers.twitter',
 )
+
+if not ON_OPENSHIFT:
+  INSTALLED_APPS += ('pipeline')
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
