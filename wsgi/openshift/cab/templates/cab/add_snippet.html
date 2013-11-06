@@ -4,7 +4,7 @@
 {% block title %}Add a snippet{% endblock %}
 
 {% block content_header %}Add a snippet{% endblock %}
-{% block css %}
+{% block extra_css %}
 <link rel="stylesheet" href="{% static "css/autoSuggest.css" %}" />
 <link rel="stylesheet" href="{% static "codemirror/lib/codemirror.css" %}" />
 <link rel="stylesheet" href="{% static "codemirror/theme/ambiance.css" %}" />
@@ -24,7 +24,7 @@
     display: none;
   }
 </style>
-{% endblock %}
+{% endblock extra_css %}
 
 {% block extra_scripts %}
 <script type="text/javascript" src="{% static "admin/js/jquery.js" %}"></script>
