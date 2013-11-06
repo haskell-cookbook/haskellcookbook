@@ -1,0 +1,69 @@
+{% extends "base_user.html" %}
+{% load static from staticfiles %}
+
+{% block title %}Add a snippet{% endblock %}
+
+{% block content_header %}Add a snippet{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static "css/autoSuggest.css" %}" />
+<link rel="stylesheet" href="{% static "codemirror/lib/codemirror.css" %}" />
+<link rel="stylesheet" href="{% static "codemirror/theme/ambiance.css" %}" />
+<style type="text/css">
+  .CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
+    min-height: 300px;
+  font-size: 12px;
+  }
+
+  .CodeMirror-scroll {
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+  .CodeMirror-hscrollbar {
+    display: none;
+  }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/javascript" src="{% static "admin/js/jquery.js" %}"></script>
+<script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.autoSuggest.js" %}"></script>
+<script type="text/javascript" src="{% static "epiceditor/js/epiceditor.min.js" %}"></script>
+<script type="text/javascript" src="{% static "codemirror/lib/codemirror.js" %}"></script>
+<script type="text/javascript" src="{% static "codemirror/mode/haskell/haskell.js" %}"></script>
+{% endblock %}
+{% block content %}
+  <p><span class="error"><strong>Please remember that this site is not a pastebin or debugging tool; it is intended for finished, working pieces of code.</strong></span> If you need someplace to temporarily post some code while others help you debug it, please use the pastebin at <a href="http://lpaste.net/">lpaste.net</a>.</p>
+
+  {% if form.errors %}
+    <p class="error">Please correct the errors below:</p>
+  {% endif %}
+
+  <form method="post" action="">{% csrf_token %}
+    <dl>
+      <dt><label for="id_title">Title: {% if form.title.errors %}<span class="error">{{ form.title.errors|join:", " }}</span>{% endif %}</label></dt>
+      <dd>{{ form.title }}</dd>
+      <dt><label for="id_tag_list">Tags: {% if form.tag_list.errors %}<span class="error">{{ form.tag_list.errors|join:", " }}</span>{% endif %} </label></dt>
+      <dd>{{ form.tags }} <br />Use commas between tag names, and hyphens for multiple words, like "tag1, tag2, tag3-with-long-name"</dd>
+      <dt><label for="id_code">Code: {% if form.code.errors %}<span class="error">{{ form.code.errors|join:", " }}</span>{% endif %}</label></dt>
+      <dd>{{ form.code }}</dd>
+      <dt><label for="id_description">Description: {% if form.description.errors %}<span class="error">{{ form.description.errors|join:", " }}</span>{% endif %}</label></dt>
+      <dd>{{ form.description }}<br />
+      You can use Markdown syntax here (see the sidebar), but <strong>raw HTML will be removed</strong>.</dd>
+      <dt><button type="submit" value="Save">Save</button></dt>
+    </dl>
+  </form>
+{% endblock %}
+
+{% block sidebar %}
+  <div class="panel">
+  <p>All fields are required; tags should be separated with spaces, and you can use Markdown in the description for your snippet, but <strong>raw HTML will be removed</strong>.</p>
+  </div>
+
+  <div class="panel callout">
+  <p><strong>Remember:</strong> by posting a snippet, you agree to let anyone make use of the code.</p>
+  </div>
+
+{% endblock %}
