@@ -3,12 +3,12 @@
 from setuptools import setup
 
 setup(
-    name='YourAppName',
+    name='Haskell Cookbook',
     version='1.0',
-    description='OpenShift App',
-    author='Your Name',
-    author_email='example@example.com',
-    url='http://www.python.org/sigs/distutils-sig/',
+    description='Site for sharing haskell code snippets',
+    author='Lakshmi Narasimhan',
+    author_email='badri.dilbert@gmail.com',
+    url='http://www.haskellcookbook.com',
     install_requires=[
         'Django==1.5.4',
         'Markdown==2.3.1',
@@ -28,6 +28,7 @@ setup(
         'requests-oauthlib==0.4.0',
         'django-allauth==0.14.1',
         'Whoosh==2.5.0',
-        'psycopg2==2.5.1'
+        'psycopg2==2.5.1',
+        'django-recaptcha==0.0.6'
         ],
 )
