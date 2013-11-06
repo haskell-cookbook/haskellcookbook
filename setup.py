@@ -29,7 +29,7 @@ setup(
         'django-allauth==0.14.1',
         'Whoosh==2.5.0',
         'psycopg2==2.5.1',
-        'django-recaptcha==0.0.6'
+        'django-recaptcha==0.0.6',
         'django-comments-spamfighter',
         'akismet>=0.2.0'
         ],
