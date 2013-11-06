@@ -19,7 +19,7 @@ setup(
         'django-pagination==1.0.7',
         'django-registration==1.0',
         'django-taggit==0.10',
-        'django-simple-ratings==0.3.2',
+        'django-simple-ratings',
         'django-taggit-autosuggest==0.2',
         'django-epiceditor==0.2.1.2',
         'django-codemirror-widget==0.3.0',
